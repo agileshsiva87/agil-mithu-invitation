@@ -178,11 +178,10 @@
       cursor: grabbing;
     }
 
-    /* ROUND LUXURY MEDALLION WITH SUBTLE LAUREL FOLIAGE */
     .zipper-round-wrap {
       position: relative;
-      width: 220px;
-      height: 156px;
+      width: 162px;
+      height: 162px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -205,11 +204,11 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      width: 150px;
+      width: 140px;
     }
 
     .medallion-crest {
-      font-size: 1.12rem;
+      font-size: 1.15rem;
       color: #9c7849;
       line-height: 1;
       margin-bottom: 2px;
@@ -332,36 +331,44 @@
       background: var(--card-cream);
     }
 
-    /* Palace Arch Pavilion Header: Exact Composition Matching Screenshot */
+    /* 
+       DYNAMIC CURTAIN-SAFE ARCH CONTAINER:
+       - Uses percentage-based padding relative to container width to mirror the 9:16 background image.
+       - padding-top: 24.5% strictly places all content below the hanging canopy valance & tassels.
+       - padding-bottom: 30% strictly stops all text above the fountain basin and plants.
+    */
     .hero-arch-container {
       position: relative;
       width: 100%;
-      min-height: 720px;
+      aspect-ratio: 9 / 15.6; /* Matches hero-bg.png proportions */
       border-bottom: 2px solid #e7d8c6;
       background-color: #faf5ee;
       background-image: url("hero-bg.png");
-      background-size: 100% auto;
+      background-size: 100% 100%;
       background-position: center top;
       background-repeat: no-repeat;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding-top: 90px;
-      padding-bottom: 120px;
+      padding-top: 24.5%;   /* Always below the drapes regardless of screen size */
+      padding-bottom: 30%; /* Always above the fountain regardless of screen size */
+      padding-left: clamp(26px, 7.5vw, 42px);  /* Inside corridor between rose urns */
+      padding-right: clamp(26px, 7.5vw, 42px); /* Inside corridor between rose urns */
       text-align: center;
     }
 
     .reveal-text-group {
       opacity: 0;
-      transform: translateY(14px);
+      transform: translateY(12px);
       transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
       width: 100%;
-      max-width: 360px;
-      padding: 4px 10px;
+      max-width: 290px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: space-evenly;
+      height: 100%;
     }
 
     .reveal-text-group.revealed {
@@ -372,18 +379,19 @@
     .hero-lead {
       font-family: var(--font-headline);
       font-style: italic;
-      font-size: 1.25rem;
-      letter-spacing: 2.2px;
+      font-size: clamp(0.95rem, 3.2vw, 1.15rem);
+      letter-spacing: 2px;
       color: #63574c;
-      margin-bottom: 10px;
+      margin-bottom: 2px;
+      line-height: 1.2;
     }
 
     .couple-title-groom, .couple-title-bride {
       font-family: var(--font-headline);
-      font-size: clamp(2.35rem, 7.8vw, 2.95rem);
+      font-size: clamp(1.85rem, 6.4vw, 2.45rem);
       font-weight: 600;
-      letter-spacing: 1.2px;
-      line-height: 1.15;
+      letter-spacing: 0.8px;
+      line-height: 1.1;
       background: var(--gold-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -393,25 +401,25 @@
 
     .hero-ampersand {
       font-family: var(--font-script);
-      font-size: 3.5rem;
+      font-size: clamp(2.4rem, 7.6vw, 3rem);
       color: var(--gold-rich);
       margin: -6px 0 -4px;
       display: block;
-      line-height: 1;
+      line-height: 0.95;
     }
 
     .family-parents-box {
-      margin-top: 14px;
+      margin-top: 6px;
       font-family: var(--font-sans);
-      font-size: 0.8rem;
-      line-height: 1.7;
+      font-size: clamp(0.68rem, 2.2vw, 0.76rem);
+      line-height: 1.55;
       color: var(--text-muted);
       border-top: 1px dashed #e2d2c1;
       border-bottom: 1px dashed #e2d2c1;
-      padding: 10px 14px;
+      padding: 6px 8px;
       width: 100%;
-      max-width: 320px;
-      letter-spacing: 0.3px;
+      max-width: 280px;
+      letter-spacing: 0.2px;
     }
 
     .family-parents-box strong {
@@ -419,30 +427,15 @@
       font-weight: 600;
     }
 
-    /* Exact Quote Style & Placement from Screenshot */
     .hero-blessing-quote {
       font-family: var(--font-headline);
       font-style: italic;
-      font-size: 1.05rem;
-      line-height: 1.75;
+      font-size: clamp(0.78rem, 2.5vw, 0.9rem);
+      line-height: 1.55;
       color: #55463a;
-      margin-top: 24px;
-      padding: 0 14px;
-      letter-spacing: 0.25px;
-    }
-
-    /* Delicate Translucent Date Badge over Top Water Tier */
-    .fountain-date-overlay {
-      margin-top: 26px;
-      font-family: var(--font-caps);
-      font-size: 0.82rem;
-      letter-spacing: 5px;
-      color: #5d4a36;
-      font-weight: 600;
-      text-transform: uppercase;
-      opacity: 0.82;
-      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
-      user-select: none;
+      margin-top: 6px;
+      padding: 0 4px;
+      letter-spacing: 0.15px;
     }
 
     /* =========================================
@@ -850,42 +843,19 @@
         <div class="teeth-right"></div>
       </div>
 
-      <!-- ROUND LUXURY MEDALLION WITH SUBTLE LAUREL FOLIAGE -->
+      <!-- CLEAN, PURE ROUND MEDALLION -->
       <div class="zipper-runner" id="zipper-runner">
         <div class="zipper-round-wrap">
-          <svg class="round-svg-bg" viewBox="0 0 220 156" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg class="round-svg-bg" viewBox="0 0 162 162" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <radialGradient id="roundPlateGrad" cx="50%" cy="45%" r="55%">
+              <radialGradient id="pureRoundGrad" cx="50%" cy="40%" r="60%">
                 <stop offset="0%" stop-color="#ffffff"/>
-                <stop offset="70%" stop-color="#faf4e8"/>
-                <stop offset="100%" stop-color="#eddac4"/>
+                <stop offset="70%" stop-color="#faf5ec"/>
+                <stop offset="100%" stop-color="#ead8c0"/>
               </radialGradient>
             </defs>
-
-            <!-- Subtle Left Laurel Foliage Branch -->
-            <g opacity="0.88">
-              <path d="M42 78 C35 62, 38 46, 52 35" stroke="#cbb287" stroke-width="1.6" stroke-linecap="round"/>
-              <path d="M42 78 C34 94, 38 110, 52 121" stroke="#cbb287" stroke-width="1.6" stroke-linecap="round"/>
-              <ellipse cx="40" cy="54" rx="4.5" ry="7" transform="rotate(-30 40 54)" fill="#cbb287"/>
-              <ellipse cx="49" cy="40" rx="4.5" ry="7" transform="rotate(-55 49 40)" fill="#cbb287"/>
-              <ellipse cx="40" cy="102" rx="4.5" ry="7" transform="rotate(30 40 102)" fill="#cbb287"/>
-              <ellipse cx="49" cy="116" rx="4.5" ry="7" transform="rotate(55 49 116)" fill="#cbb287"/>
-            </g>
-
-            <!-- Subtle Right Laurel Foliage Branch -->
-            <g opacity="0.88">
-              <path d="M178 78 C185 62, 182 46, 168 35" stroke="#cbb287" stroke-width="1.6" stroke-linecap="round"/>
-              <path d="M178 78 C186 94, 182 110, 168 121" stroke="#cbb287" stroke-width="1.6" stroke-linecap="round"/>
-              <ellipse cx="180" cy="54" rx="4.5" ry="7" transform="rotate(30 180 54)" fill="#cbb287"/>
-              <ellipse cx="171" cy="40" rx="4.5" ry="7" transform="rotate(55 171 40)" fill="#cbb287"/>
-              <ellipse cx="180" cy="102" rx="4.5" ry="7" transform="rotate(-30 180 102)" fill="#cbb287"/>
-              <ellipse cx="171" cy="116" rx="4.5" ry="7" transform="rotate(-55 171 116)" fill="#cbb287"/>
-            </g>
-
-            <!-- Main Polished Round Medallion Body -->
-            <circle cx="110" cy="78" r="70" fill="url(#roundPlateGrad)" stroke="#dfc79b" stroke-width="3"/>
-            <!-- Stitched Inner Dotted Border -->
-            <circle cx="110" cy="78" r="62" stroke="#b9996b" stroke-width="1.2" stroke-dasharray="3.5 3.5"/>
+            <circle cx="81" cy="81" r="77" fill="url(#pureRoundGrad)" stroke="#dfc79b" stroke-width="3"/>
+            <circle cx="81" cy="81" r="69" stroke="#b9996b" stroke-width="1.2" stroke-dasharray="3.5 3.5"/>
           </svg>
 
           <div class="round-medallion-content">
@@ -912,7 +882,7 @@
          ========================================= -->
     <div id="page-invite">
 
-      <!-- Palace Arch Pavilion Header Matching Screenshot -->
+      <!-- Palace Arch Pavilion Header with Dynamic Curtain & Fountain Clearance -->
       <div class="hero-arch-container">
         <div class="reveal-text-group" id="reveal-text-group">
           <div class="hero-lead">We're getting married</div>
@@ -923,10 +893,9 @@
 
           <div class="family-parents-box">
             <div><strong>Groom:</strong> S/o Sivanandam & Vijayalakshmi</div>
-            <div style="margin-top: 4px;"><strong>Bride:</strong> D/o Mohanasundaram & Selvi</div>
+            <div style="margin-top: 2px;"><strong>Bride:</strong> D/o Mohanasundaram & Selvi</div>
           </div>
 
-          <!-- Blessing quote centered between parents & fountain -->
           <p class="hero-blessing-quote">
             "With the blessings of the Almighty, our ancestors, and our beloved families, we joyfully invite you to celebrate our union as we begin this sacred lifelong journey of love, faith, and companionship."
           </p>
@@ -938,13 +907,11 @@
         <div class="scratch-card-subtitle">Scratch the heart below to uncover the date</div>
 
         <div class="heart-stage" id="heart-stage">
-          <!-- Outlined Round Heart Border SVG (280x255) -->
           <svg class="heart-outline-svg" viewBox="0 0 280 255" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M140 236 C116 218, 20 153, 20 83 C20 39, 53 16, 90 16 C113 16, 130 29, 140 44 C150 29, 167 16, 190 16 C227 16, 260 39, 260 83 C260 153, 164 218, 140 236 Z" 
                   stroke="#cbb287" stroke-width="2" stroke-dasharray="3.5 3.5"/>
           </svg>
 
-          <!-- Fully Uncongested Text Layer -->
           <div class="heart-revealed-layer">
             <div class="sub-forever">Our forever begins</div>
             <div class="dates-val">11 & 12 Mar</div>
@@ -1001,15 +968,17 @@
         </div>
       </div>
 
-      <!-- Program Timeline: Clean, Minimal, No Paragraphs -->
+      <!-- Program Timeline: Clean & Minimal -->
       <div class="section-header-title">Program Timeline</div>
 
       <div class="card-entry">
+        <div class="event-lamp-icon">🪔</div>
         <h3 class="entry-title">Wedding Reception</h3>
         <div class="entry-time">Thursday, 11th March 2027 &bull; 6:00 PM – 9:00 PM</div>
       </div>
 
       <div class="card-entry">
+        <div class="event-lamp-icon">🪔</div>
         <h3 class="entry-title">Auspicious Muhurtham</h3>
         <div class="entry-time">Friday, 12th March 2027 &bull; 6:00 AM – 7:30 AM</div>
       </div>
@@ -1203,7 +1172,6 @@
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 280, 255);
 
-      // Gold & pearl shimmering glitter flakes
       ctx.fillStyle = 'rgba(255, 235, 195, 0.65)';
       for (let i = 0; i < 110; i++) {
         ctx.beginPath();
@@ -1261,7 +1229,6 @@
         lastCheckTime = now;
         const percentage = calculateScratchPercentage();
 
-        // STRICT 90% THRESHOLD
         if (percentage >= 0.90) {
           isHeartRevealed = true;
           canvas.classList.add('fade-out');
