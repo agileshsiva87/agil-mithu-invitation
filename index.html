@@ -178,6 +178,7 @@
       cursor: grabbing;
     }
 
+    /* CLEAN, PURE ROUND MEDALLION */
     .zipper-round-wrap {
       position: relative;
       width: 162px;
@@ -332,43 +333,47 @@
     }
 
     /* 
-       DYNAMIC CURTAIN-SAFE ARCH CONTAINER:
-       - Uses percentage-based padding relative to container width to mirror the 9:16 background image.
-       - padding-top: 24.5% strictly places all content below the hanging canopy valance & tassels.
-       - padding-bottom: 30% strictly stops all text above the fountain basin and plants.
+       EXACT VIEWPORT-LOCKED HERO ARCH CONTAINER:
+       Uses relative positioning with an absolute safe box to guarantee
+       text can NEVER touch the curtains above or the fountain below.
     */
     .hero-arch-container {
       position: relative;
       width: 100%;
-      aspect-ratio: 9 / 15.6; /* Matches hero-bg.png proportions */
+      aspect-ratio: 9 / 16;
       border-bottom: 2px solid #e7d8c6;
       background-color: #faf5ee;
       background-image: url("hero-bg.png");
       background-size: 100% 100%;
       background-position: center top;
       background-repeat: no-repeat;
+      overflow: hidden;
+    }
+
+    /* Strict Bounding Box over the clear ivory area of the background */
+    .hero-safe-corridor {
+      position: absolute;
+      top: 24%;    /* Strictly below canopy valance & tassels */
+      bottom: 32%; /* Strictly above fountain basin & plants */
+      left: 14%;   /* Strictly inside the rose bouquets */
+      right: 14%;  /* Strictly inside the rose bouquets */
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      padding-top: 24.5%;   /* Always below the drapes regardless of screen size */
-      padding-bottom: 30%; /* Always above the fountain regardless of screen size */
-      padding-left: clamp(26px, 7.5vw, 42px);  /* Inside corridor between rose urns */
-      padding-right: clamp(26px, 7.5vw, 42px); /* Inside corridor between rose urns */
+      justify-content: space-between;
       text-align: center;
     }
 
     .reveal-text-group {
       opacity: 0;
-      transform: translateY(12px);
+      transform: translateY(8px);
       transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
       width: 100%;
-      max-width: 290px;
+      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-evenly;
-      height: 100%;
+      justify-content: space-between;
     }
 
     .reveal-text-group.revealed {
@@ -379,19 +384,25 @@
     .hero-lead {
       font-family: var(--font-headline);
       font-style: italic;
-      font-size: clamp(0.95rem, 3.2vw, 1.15rem);
+      font-size: clamp(0.85rem, 2.7vw, 1.05rem);
       letter-spacing: 2px;
       color: #63574c;
-      margin-bottom: 2px;
-      line-height: 1.2;
+      line-height: 1.15;
+    }
+
+    .names-boxed-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 2px 0;
     }
 
     .couple-title-groom, .couple-title-bride {
       font-family: var(--font-headline);
-      font-size: clamp(1.85rem, 6.4vw, 2.45rem);
+      font-size: clamp(1.95rem, 6.2vw, 2.45rem);
       font-weight: 600;
       letter-spacing: 0.8px;
-      line-height: 1.1;
+      line-height: 1.05;
       background: var(--gold-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -401,24 +412,22 @@
 
     .hero-ampersand {
       font-family: var(--font-script);
-      font-size: clamp(2.4rem, 7.6vw, 3rem);
+      font-size: clamp(2.1rem, 6.8vw, 2.7rem);
       color: var(--gold-rich);
-      margin: -6px 0 -4px;
+      margin: -4px 0 -2px;
       display: block;
-      line-height: 0.95;
+      line-height: 0.9;
     }
 
     .family-parents-box {
-      margin-top: 6px;
       font-family: var(--font-sans);
-      font-size: clamp(0.68rem, 2.2vw, 0.76rem);
-      line-height: 1.55;
+      font-size: clamp(0.64rem, 2vw, 0.74rem);
+      line-height: 1.5;
       color: var(--text-muted);
       border-top: 1px dashed #e2d2c1;
       border-bottom: 1px dashed #e2d2c1;
-      padding: 6px 8px;
+      padding: 5px 8px;
       width: 100%;
-      max-width: 280px;
       letter-spacing: 0.2px;
     }
 
@@ -430,10 +439,9 @@
     .hero-blessing-quote {
       font-family: var(--font-headline);
       font-style: italic;
-      font-size: clamp(0.78rem, 2.5vw, 0.9rem);
+      font-size: clamp(0.74rem, 2.3vw, 0.85rem);
       line-height: 1.55;
       color: #55463a;
-      margin-top: 6px;
       padding: 0 4px;
       letter-spacing: 0.15px;
     }
@@ -667,7 +675,7 @@
       font-weight: 600;
     }
 
-    /* Program Timeline */
+    /* Program Timeline: Clean & Minimal */
     .section-header-title {
       text-align: center;
       font-family: var(--font-caps);
@@ -882,23 +890,27 @@
          ========================================= -->
     <div id="page-invite">
 
-      <!-- Palace Arch Pavilion Header with Dynamic Curtain & Fountain Clearance -->
+      <!-- Palace Arch Pavilion Header with Strict Corridor Safe-Zone -->
       <div class="hero-arch-container">
-        <div class="reveal-text-group" id="reveal-text-group">
-          <div class="hero-lead">We're getting married</div>
+        <div class="hero-safe-corridor">
+          <div class="reveal-text-group" id="reveal-text-group">
+            <div class="hero-lead">We're getting married</div>
 
-          <div class="couple-title-groom">Miruthula</div>
-          <span class="hero-ampersand">&</span>
-          <div class="couple-title-bride">Agileshwaran</div>
+            <div class="names-boxed-group">
+              <div class="couple-title-groom">Miruthula</div>
+              <span class="hero-ampersand">&</span>
+              <div class="couple-title-bride">Agileshwaran</div>
+            </div>
 
-          <div class="family-parents-box">
-            <div><strong>Groom:</strong> S/o Sivanandam & Vijayalakshmi</div>
-            <div style="margin-top: 2px;"><strong>Bride:</strong> D/o Mohanasundaram & Selvi</div>
+            <div class="family-parents-box">
+              <div><strong>Groom:</strong> S/o Sivanandam & Vijayalakshmi</div>
+              <div style="margin-top: 2px;"><strong>Bride:</strong> D/o Mohanasundaram & Selvi</div>
+            </div>
+
+            <p class="hero-blessing-quote">
+              "With the blessings of the Almighty, our ancestors, and our beloved families, we joyfully invite you to celebrate our union as we begin this sacred lifelong journey of love, faith, and companionship."
+            </p>
           </div>
-
-          <p class="hero-blessing-quote">
-            "With the blessings of the Almighty, our ancestors, and our beloved families, we joyfully invite you to celebrate our union as we begin this sacred lifelong journey of love, faith, and companionship."
-          </p>
         </div>
       </div>
 
