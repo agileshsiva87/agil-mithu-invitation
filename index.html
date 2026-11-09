@@ -5,43 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Miruthula & Agileshwaran — Wedding Invitation</title>
 
-  <!-- Google Fonts: Luxury Editorial & Calligraphy Stack -->
+  <!-- Google Fonts: Luxury Editorial, Script, & Serif Stacks -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+
+  <!-- GSAP Animation Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <!-- Canvas Confetti Engine for Revealing Burst -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
     :root {
-      --sage-deep: #3c4c37;
-      --sage-main: #53674e;
-      --sage-light: #758c6e;
+      --sage-deep: #475843;
+      --sage-main: #61775d;
+      --sage-light: #7b9177;
       --gold-dark: #826336;
       --gold-rich: #c5a470;
       --gold-bright: #f5e4bd;
-      --gold-gradient: linear-gradient(135deg, #3d2f21 0%, #7d5e3f 38%, #b9925e 72%, #543e2c 100%);
+      --gold-gradient: linear-gradient(135deg, #382c20 0%, #7d5e3f 38%, #b9925e 72%, #4f3a28 100%);
       --foil-gold: linear-gradient(135deg, #e3c996 0%, #fff6e0 35%, #c8a36c 65%, #8f6c38 100%);
-      --card-cream: #faf6f0;
-      --card-white: #ffffff;
+      --card-cream: #faf5ee;
       --text-dark: #2c221a;
       --text-muted: #75675a;
       --btn-green: #485c43;
 
       /* Typography */
       --font-headline: "Playfair Display", "Cormorant Garamond", Georgia, serif;
-      --font-script: "Great Vibes", "Snell Roundhand", cursive;
+      --font-script: "Alex Brush", "Great Vibes", cursive;
       --font-caps: "Cinzel", "Palatino Linotype", serif;
       --font-sans: "Montserrat", -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
-    /* Page-level scrolling (No scroll on Page 1; browser window scrolls Page 2) */
     html {
       width: 100%;
       min-height: 100%;
       background: #dfd7cc;
       overflow-x: hidden;
-      overflow-y: hidden; /* Locked while zipper is closed */
+      overflow-y: hidden;
     }
 
     body {
@@ -58,30 +61,28 @@
       overflow-x: hidden;
     }
 
-    /* When unzipped, the window (page) gets the scrollbar, NOT the invitation */
     html.unzipped-page, body.unzipped-page {
       overflow-y: auto;
     }
 
-    /* Phone container remains flush with content — no inner scrollbar */
     .phone-container {
       width: 100%;
       max-width: 440px;
-      height: 100vh; /* Locked on Page 1 */
+      height: 100vh;
       background: var(--card-cream);
       position: relative;
-      box-shadow: 0 16px 50px rgba(0,0,0,0.25);
-      overflow: hidden; /* No inner scrollbar */
+      box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+      overflow: hidden;
     }
 
     .phone-container.unzipped-page {
       height: auto;
       min-height: 100vh;
-      overflow: visible; /* Content flows down naturally onto the body */
+      overflow: visible;
     }
 
     /* =========================================
-       PAGE 1: TRUE DYNAMIC SPLIT UNZIPPER
+       PAGE 1: SAGE EMBOSSED ZIPPER COVER
        ========================================= */
     #page-zipper {
       position: fixed;
@@ -94,178 +95,139 @@
       z-index: 100;
       overflow: hidden;
       pointer-events: auto;
+      background: transparent;
     }
 
-    /* Left Curtain */
+    .curtain-left, .curtain-right {
+      position: absolute;
+      top: 0;
+      width: 50.5%;
+      height: 100%;
+      background-color: var(--sage-main);
+      background-image: 
+        radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.18) 0%, transparent 70%),
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08) 12%, transparent 13%),
+        radial-gradient(circle at 0% 0%, rgba(0,0,0,0.09) 15%, transparent 16%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 6px);
+      background-size: 100% 100%, 30px 30px, 30px 30px, 8px 8px;
+      box-shadow: inset 0 0 60px rgba(0,0,0,0.3);
+      z-index: 5;
+    }
+
     .curtain-left {
-      position: absolute;
-      top: 0;
       left: 0;
-      width: 50.5%;
-      height: 100%;
-      background-color: var(--sage-main);
-      background-image: 
-        radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.16) 0%, transparent 65%),
-        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08) 12%, transparent 13%),
-        radial-gradient(circle at 0% 0%, rgba(0,0,0,0.08) 15%, transparent 16%),
-        repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 6px);
-      background-size: 100% 100%, 28px 28px, 28px 28px, 8px 8px;
-      box-shadow: inset 0 0 60px rgba(0,0,0,0.28);
       border-right: 2px solid #dfc79b;
-      z-index: 5;
     }
 
-    /* Right Curtain */
     .curtain-right {
-      position: absolute;
-      top: 0;
       right: 0;
-      width: 50.5%;
-      height: 100%;
-      background-color: var(--sage-main);
-      background-image: 
-        radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.16) 0%, transparent 65%),
-        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08) 12%, transparent 13%),
-        radial-gradient(circle at 0% 0%, rgba(0,0,0,0.08) 15%, transparent 16%),
-        repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 6px);
-      background-size: 100% 100%, 28px 28px, 28px 28px, 8px 8px;
-      box-shadow: inset 0 0 60px rgba(0,0,0,0.28);
       border-left: 2px solid #dfc79b;
-      z-index: 5;
     }
 
-    /* Elegant Metallic Gold Filigree Trim */
-    .curtain-left::after, .curtain-right::after {
-      content: "";
+    .teeth-left, .teeth-right {
       position: absolute;
       top: 0;
       bottom: 0;
       width: 8px;
-      background: repeating-linear-gradient(to bottom, #deb879 0px, #deb879 5px, transparent 5px, transparent 10px);
-      opacity: 0.95;
+      background: repeating-linear-gradient(
+        to bottom,
+        #fff5de 0px,
+        #fff5de 3px,
+        #826336 3px,
+        #826336 7px
+      );
+      z-index: 6;
     }
-    .curtain-left::after { right: 2px; }
-    .curtain-right::after { left: 2px; }
+    .teeth-left { right: -1px; }
+    .teeth-right { left: -1px; }
 
-    /* Closed teeth line running down the center */
     .zipper-closed-teeth {
       position: absolute;
-      top: 0;
       bottom: 0;
       width: 14px;
       left: 50%;
       transform: translateX(-50%);
       background: repeating-linear-gradient(
         to bottom,
-        #fff4db 0px,
-        #fff4db 2px,
+        #fff5de 0px,
+        #fff5de 2px,
         #c89f64 3px,
         #795f3b 4px,
         #795f3b 6px,
-        #fff4db 7px
+        #fff5de 7px
       );
       box-shadow: 0 0 10px rgba(0,0,0,0.35);
       z-index: 6;
     }
 
-    /* Runner Assembly */
     .zipper-runner {
       position: absolute;
-      top: 14%;
+      top: 25%;
       left: 50%;
       transform: translate(-50%, 0);
       display: flex;
       flex-direction: column;
       align-items: center;
-      cursor: pointer;
+      cursor: grab;
       z-index: 20;
       user-select: none;
-      transition: transform 0.15s ease;
+      touch-action: none;
     }
 
     .zipper-runner:active {
-      transform: translate(-50%, 0) scale(0.97);
+      cursor: grabbing;
     }
 
-    /* Radial Satin Glow Behind Medallion */
-    .medallion-glow {
+    /* ROUND LUXURY MEDALLION WITH SUBTLE LAUREL FOLIAGE */
+    .zipper-round-wrap {
+      position: relative;
+      width: 220px;
+      height: 156px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 14px 28px rgba(0,0,0,0.38));
+    }
+
+    .round-svg-bg {
       position: absolute;
-      top: -16px;
-      left: -16px;
-      right: -16px;
-      height: 196px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(235, 213, 168, 0.55) 0%, rgba(235, 213, 168, 0) 72%);
-      animation: ambientGlow 2.8s infinite ease-in-out;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
     }
 
-    @keyframes ambientGlow {
-      0%, 100% { transform: scale(0.95); opacity: 0.5; }
-      50% { transform: scale(1.08); opacity: 0.95; }
-    }
-
-    /* Luxury Outer Medallion */
-    .zipper-badge {
-      width: 168px;
-      height: 168px;
-      background: radial-gradient(circle at 45% 40%, #ffffff 0%, #faf3e6 55%, #edd7be 100%);
-      border-radius: 50%;
+    .round-medallion-content {
       position: relative;
+      z-index: 2;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      box-shadow: 
-        0 18px 40px rgba(0,0,0,0.4),
-        0 2px 0 rgba(255,255,255,0.9) inset,
-        0 -4px 10px rgba(120,90,50,0.35) inset;
-      border: 3.5px solid #dfc79b;
+      text-align: center;
+      width: 150px;
     }
 
-    .zipper-badge::before {
-      content: "";
-      position: absolute;
-      top: 5px;
-      left: 5px;
-      right: 5px;
-      bottom: 5px;
-      border: 1.5px dashed #b9996b;
-      border-radius: 50%;
-      pointer-events: none;
-    }
-
-    .badge-laurel-wrap {
-      width: 125px;
-      height: 48px;
-      position: absolute;
-      top: 26px;
-      opacity: 0.8;
-      pointer-events: none;
-    }
-
-    .badge-crest-icon {
-      font-size: 1.25rem;
+    .medallion-crest {
+      font-size: 1.12rem;
       color: #9c7849;
-      margin-top: 10px;
       line-height: 1;
-      filter: drop-shadow(0 1px 1px rgba(255,255,255,0.8));
+      margin-bottom: 2px;
     }
 
-    .badge-names {
+    .medallion-names {
       font-family: var(--font-caps);
       font-size: 1.35rem;
       font-weight: 700;
-      letter-spacing: 5px;
+      letter-spacing: 4px;
       color: #38291c;
-      margin: 2px 0 0 5px;
       line-height: 1.1;
-      text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+      text-shadow: 0 1px 0 rgba(255,255,255,0.85);
     }
 
-    .badge-sub {
+    .medallion-sub {
       font-family: var(--font-sans);
-      font-size: 0.56rem;
+      font-size: 0.54rem;
       letter-spacing: 3px;
       text-transform: uppercase;
       color: #856f59;
@@ -273,35 +235,35 @@
       font-weight: 600;
     }
 
-    /* High-Gloss Metallic Jewelry Pull Tab */
-    .zipper-pendant-hook {
-      width: 20px;
-      height: 15px;
+    .slider-head-box {
+      width: 24px;
+      height: 16px;
       background: var(--foil-gold);
       border-radius: 4px;
-      margin-top: -3px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.32);
+      margin-top: -4px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.35);
       border: 1px solid #7d5e35;
       display: flex;
       justify-content: center;
       align-items: center;
-    }
-    .zipper-pendant-hook::after {
-      content: "";
-      width: 7px;
-      height: 7px;
-      background: #3f4e3c;
-      border-radius: 50%;
-      box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
+      z-index: 2;
     }
 
-    .zipper-pendant {
-      width: 28px;
-      height: 52px;
+    .slider-tab-ring {
+      width: 8px;
+      height: 8px;
+      background: #475843;
+      border-radius: 50%;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.7);
+    }
+
+    .slider-pull-charm {
+      width: 26px;
+      height: 54px;
       background: var(--foil-gold);
-      border-radius: 9px 9px 14px 14px;
+      border-radius: 8px 8px 14px 14px;
       margin-top: -2px;
-      box-shadow: 0 10px 22px rgba(0,0,0,0.38), inset 0 1px 2px rgba(255,255,255,0.8);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.8);
       border: 1px solid #82663d;
       position: relative;
       display: flex;
@@ -311,22 +273,21 @@
       transform-origin: top center;
     }
 
-    .zipper-pendant::before {
+    .slider-pull-charm::before {
       content: "";
       width: 10px;
-      height: 20px;
-      background: rgba(0,0,0,0.22);
+      height: 22px;
+      background: rgba(0,0,0,0.24);
       border-radius: 4px;
       margin-top: 8px;
-      box-shadow: inset 0 1.5px 3px rgba(0,0,0,0.5);
+      box-shadow: inset 0 1.5px 3px rgba(0,0,0,0.6);
     }
 
-    /* Subtle Ridge Details on Slide Body */
-    .zipper-pendant::after {
+    .slider-pull-charm::after {
       content: "";
       width: 14px;
       height: 3px;
-      background: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.6);
       border-radius: 2px;
       margin-top: 6px;
     }
@@ -338,16 +299,16 @@
     }
 
     .badge-pill-hint {
-      margin-top: 18px;
+      margin-top: 14px;
       background: rgba(255, 255, 255, 0.22);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.55);
       border-radius: 30px;
-      padding: 8px 24px;
+      padding: 7px 20px;
       color: #ffffff;
-      font-size: 0.68rem;
-      letter-spacing: 2.2px;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
       text-transform: uppercase;
       font-weight: 600;
       white-space: nowrap;
@@ -371,42 +332,57 @@
       background: var(--card-cream);
     }
 
-    /* Pavilion Gate Arch with Maavilai Thoranam Decor */
-    .hero-arch {
-      background: #ffffff;
-      padding: 30px 24px 34px;
-      text-align: center;
-      border-bottom: 2px solid #e7d8c6;
-      background-image: 
-        radial-gradient(circle at 50% 10%, rgba(200, 173, 133, 0.08) 0%, transparent 60%),
-        radial-gradient(ellipse at top, #faf4ec 0%, #ffffff 80%);
+    /* Palace Arch Pavilion Header: Exact Composition Matching Screenshot */
+    .hero-arch-container {
       position: relative;
+      width: 100%;
+      min-height: 720px;
+      border-bottom: 2px solid #e7d8c6;
+      background-color: #faf5ee;
+      background-image: url("hero-bg.png");
+      background-size: 100% auto;
+      background-position: center top;
+      background-repeat: no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 90px;
+      padding-bottom: 120px;
+      text-align: center;
     }
 
-    .thoranam-wrap {
+    .reveal-text-group {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
       width: 100%;
-      height: 28px;
-      margin-bottom: 14px;
+      max-width: 360px;
+      padding: 4px 10px;
       display: flex;
-      justify-content: center;
-      opacity: 0.9;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .reveal-text-group.revealed {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .hero-lead {
-      font-family: var(--font-caps);
-      font-size: 0.78rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 16px;
-      font-weight: 600;
+      font-family: var(--font-headline);
+      font-style: italic;
+      font-size: 1.25rem;
+      letter-spacing: 2.2px;
+      color: #63574c;
+      margin-bottom: 10px;
     }
 
     .couple-title-groom, .couple-title-bride {
       font-family: var(--font-headline);
-      font-size: clamp(2.4rem, 7.5vw, 2.9rem);
+      font-size: clamp(2.35rem, 7.8vw, 2.95rem);
       font-weight: 600;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
       line-height: 1.15;
       background: var(--gold-gradient);
       -webkit-background-clip: text;
@@ -417,25 +393,24 @@
 
     .hero-ampersand {
       font-family: var(--font-script);
-      font-size: 3.4rem;
+      font-size: 3.5rem;
       color: var(--gold-rich);
-      margin: -6px 0;
+      margin: -6px 0 -4px;
       display: block;
       line-height: 1;
     }
 
     .family-parents-box {
-      margin-top: 22px;
+      margin-top: 14px;
       font-family: var(--font-sans);
-      font-size: 0.82rem;
-      line-height: 1.8;
+      font-size: 0.8rem;
+      line-height: 1.7;
       color: var(--text-muted);
       border-top: 1px dashed #e2d2c1;
       border-bottom: 1px dashed #e2d2c1;
-      padding: 14px 16px;
-      max-width: 340px;
-      margin-left: auto;
-      margin-right: auto;
+      padding: 10px 14px;
+      width: 100%;
+      max-width: 320px;
       letter-spacing: 0.3px;
     }
 
@@ -444,22 +419,39 @@
       font-weight: 600;
     }
 
-    .welcome-quote {
+    /* Exact Quote Style & Placement from Screenshot */
+    .hero-blessing-quote {
       font-family: var(--font-headline);
       font-style: italic;
       font-size: 1.05rem;
-      line-height: 1.8;
+      line-height: 1.75;
       color: #55463a;
-      padding: 24px 20px 8px;
-      text-align: center;
-      letter-spacing: 0.3px;
+      margin-top: 24px;
+      padding: 0 14px;
+      letter-spacing: 0.25px;
     }
 
-    /* Scratch Card */
+    /* Delicate Translucent Date Badge over Top Water Tier */
+    .fountain-date-overlay {
+      margin-top: 26px;
+      font-family: var(--font-caps);
+      font-size: 0.82rem;
+      letter-spacing: 5px;
+      color: #5d4a36;
+      font-weight: 600;
+      text-transform: uppercase;
+      opacity: 0.82;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
+      user-select: none;
+    }
+
+    /* =========================================
+       SCRATCH-TO-REVEAL SECTION
+       ========================================= */
     .scratch-card {
       background: #ffffff;
       margin: 20px 16px;
-      padding: 26px 20px;
+      padding: 24px 18px 22px;
       border-radius: 20px;
       border: 1px solid #ebdacf;
       text-align: center;
@@ -468,73 +460,67 @@
       overflow: hidden;
     }
 
-    .scratch-card::before {
-      content: "";
-      position: absolute;
-      top: -30px;
-      right: -30px;
-      width: 100px;
-      height: 100px;
-      background: radial-gradient(circle, rgba(197, 164, 112, 0.12) 0%, transparent 70%);
-      border-radius: 50%;
-    }
-
-    .scratch-card-title {
-      font-family: var(--font-script);
-      font-size: 3.2rem;
-      color: #8c7052;
-      margin-bottom: -4px;
-      line-height: 1.1;
-    }
-
     .scratch-card-subtitle {
-      font-family: var(--font-caps);
-      font-size: 0.74rem;
-      letter-spacing: 2.5px;
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      letter-spacing: 2.2px;
       text-transform: uppercase;
       color: var(--text-muted);
       margin-bottom: 18px;
-      font-weight: 600;
+      font-weight: 500;
     }
 
     .heart-stage {
       position: relative;
-      width: 220px;
-      height: 200px;
+      width: 280px;
+      height: 255px;
       margin: 0 auto 16px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
+    .heart-outline-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
     .heart-revealed-layer {
       position: absolute;
       text-align: center;
-      z-index: 1;
+      z-index: 2;
       pointer-events: none;
-      width: 170px;
+      width: 220px;
+      padding-top: 10px;
     }
 
     .heart-revealed-layer .sub-forever {
       font-family: var(--font-script);
-      font-size: 1.8rem;
-      color: #9c7b5d;
-      line-height: 1;
+      font-size: 1.55rem;
+      color: #8c6d48;
+      line-height: 1.1;
+      margin-bottom: 8px;
     }
 
     .heart-revealed-layer .dates-val {
       font-family: var(--font-headline);
-      font-size: 1.38rem;
+      font-size: 1.75rem;
       font-weight: 600;
       color: #3b2c21;
-      margin: 4px 0 2px;
-      letter-spacing: 1px;
+      margin-bottom: 4px;
+      letter-spacing: 1.5px;
+      line-height: 1.15;
     }
 
     .heart-revealed-layer .year-val {
       font-family: var(--font-caps);
-      font-size: 0.88rem;
-      letter-spacing: 4px;
+      font-size: 0.96rem;
+      letter-spacing: 5px;
       color: #7d6b5e;
       font-weight: 600;
     }
@@ -543,12 +529,12 @@
       position: absolute;
       top: 0;
       left: 0;
-      width: 220px;
-      height: 200px;
-      z-index: 2;
-      cursor: pointer;
+      width: 280px;
+      height: 255px;
+      z-index: 3;
+      cursor: crosshair;
       touch-action: none;
-      transition: opacity 1.6s cubic-bezier(0.25, 1, 0.5, 1);
+      transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
     .scratch-canvas.fade-out {
@@ -560,15 +546,15 @@
       display: inline-block;
       background: var(--btn-green);
       color: #ffffff;
-      padding: 12px 38px;
-      border-radius: 25px;
+      padding: 9px 28px;
+      border-radius: 20px;
       font-family: var(--font-caps);
-      font-size: 0.82rem;
+      font-size: 0.72rem;
       letter-spacing: 2px;
       text-transform: uppercase;
       font-weight: 600;
       text-decoration: none;
-      box-shadow: 0 4px 14px rgba(72, 92, 67, 0.35);
+      box-shadow: 0 4px 12px rgba(72, 92, 67, 0.3);
       cursor: pointer;
       border: none;
       transition: 0.2s;
@@ -645,7 +631,7 @@
 
     .countdown-title {
       font-family: var(--font-script);
-      font-size: 3rem;
+      font-size: 2.8rem;
       color: #8c7052;
       margin-bottom: 8px;
       line-height: 1.1;
@@ -688,7 +674,7 @@
       font-weight: 600;
     }
 
-    /* Program Timeline & Venue */
+    /* Program Timeline */
     .section-header-title {
       text-align: center;
       font-family: var(--font-caps);
@@ -713,18 +699,18 @@
 
     .card-entry {
       background: #ffffff;
-      margin: 14px 16px;
-      border-radius: 18px;
-      padding: 24px 20px;
+      margin: 12px 16px;
+      border-radius: 16px;
+      padding: 18px 20px;
       border: 1px solid #ebdacf;
       box-shadow: 0 4px 16px rgba(0,0,0,0.03);
       position: relative;
     }
 
     .event-lamp-icon {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       color: var(--gold-rich);
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .entry-title {
@@ -741,15 +727,7 @@
       font-size: 0.82rem;
       font-weight: 600;
       color: var(--btn-green);
-      margin-bottom: 8px;
       letter-spacing: 0.3px;
-    }
-
-    .entry-desc {
-      font-family: var(--font-sans);
-      font-size: 0.84rem;
-      color: var(--text-muted);
-      line-height: 1.6;
     }
 
     .venue-center {
@@ -857,41 +835,74 @@
   <div class="phone-container" id="phone-container">
 
     <!-- =========================================
-         PAGE 1: TRUE DYNAMIC SPLIT UNZIPPER
+         PAGE 1: SAGE EMBOSSED ZIPPER COVER
          ========================================= -->
     <div id="page-zipper">
-      <!-- Closed teeth line below the runner -->
       <div class="zipper-closed-teeth" id="closed-teeth"></div>
 
       <!-- Left Curtain -->
-      <div class="curtain-left" id="curtain-left"></div>
+      <div class="curtain-left" id="curtain-left">
+        <div class="teeth-left"></div>
+      </div>
 
       <!-- Right Curtain -->
-      <div class="curtain-right" id="curtain-right"></div>
+      <div class="curtain-right" id="curtain-right">
+        <div class="teeth-right"></div>
+      </div>
 
-      <!-- Medallion Runner that leads the downward split -->
-      <div class="zipper-runner" id="zipper-runner" onclick="startSynchronizedUnzip()">
-        <div class="medallion-glow"></div>
+      <!-- ROUND LUXURY MEDALLION WITH SUBTLE LAUREL FOLIAGE -->
+      <div class="zipper-runner" id="zipper-runner">
+        <div class="zipper-round-wrap">
+          <svg class="round-svg-bg" viewBox="0 0 220 156" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="roundPlateGrad" cx="50%" cy="45%" r="55%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="70%" stop-color="#faf4e8"/>
+                <stop offset="100%" stop-color="#eddac4"/>
+              </radialGradient>
+            </defs>
 
-        <div class="zipper-badge">
-          <!-- Traditional Thoranam SVG Garland -->
-          <svg class="badge-laurel-wrap" viewBox="0 0 140 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 38C26 28 35 22 48 20C42 16 34 18 26 24C20 28 17 33 20 38Z" fill="#bfa072"/>
-            <path d="M40 22C46 15 54 13 64 14C58 9 50 10 42 14C36 17 35 20 40 22Z" fill="#cbb287"/>
-            <path d="M120 38C114 28 105 22 92 20C98 16 106 18 114 24C120 28 123 33 120 38Z" fill="#bfa072"/>
-            <path d="M100 22C94 15 86 13 76 14C82 9 90 10 98 14C104 17 105 20 100 22Z" fill="#cbb287"/>
+            <!-- Subtle Left Laurel Foliage Branch -->
+            <g opacity="0.88">
+              <path d="M42 78 C35 62, 38 46, 52 35" stroke="#cbb287" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M42 78 C34 94, 38 110, 52 121" stroke="#cbb287" stroke-width="1.6" stroke-linecap="round"/>
+              <ellipse cx="40" cy="54" rx="4.5" ry="7" transform="rotate(-30 40 54)" fill="#cbb287"/>
+              <ellipse cx="49" cy="40" rx="4.5" ry="7" transform="rotate(-55 49 40)" fill="#cbb287"/>
+              <ellipse cx="40" cy="102" rx="4.5" ry="7" transform="rotate(30 40 102)" fill="#cbb287"/>
+              <ellipse cx="49" cy="116" rx="4.5" ry="7" transform="rotate(55 49 116)" fill="#cbb287"/>
+            </g>
+
+            <!-- Subtle Right Laurel Foliage Branch -->
+            <g opacity="0.88">
+              <path d="M178 78 C185 62, 182 46, 168 35" stroke="#cbb287" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M178 78 C186 94, 182 110, 168 121" stroke="#cbb287" stroke-width="1.6" stroke-linecap="round"/>
+              <ellipse cx="180" cy="54" rx="4.5" ry="7" transform="rotate(30 180 54)" fill="#cbb287"/>
+              <ellipse cx="171" cy="40" rx="4.5" ry="7" transform="rotate(55 171 40)" fill="#cbb287"/>
+              <ellipse cx="180" cy="102" rx="4.5" ry="7" transform="rotate(-30 180 102)" fill="#cbb287"/>
+              <ellipse cx="171" cy="116" rx="4.5" ry="7" transform="rotate(-55 171 116)" fill="#cbb287"/>
+            </g>
+
+            <!-- Main Polished Round Medallion Body -->
+            <circle cx="110" cy="78" r="70" fill="url(#roundPlateGrad)" stroke="#dfc79b" stroke-width="3"/>
+            <!-- Stitched Inner Dotted Border -->
+            <circle cx="110" cy="78" r="62" stroke="#b9996b" stroke-width="1.2" stroke-dasharray="3.5 3.5"/>
           </svg>
 
-          <div class="badge-crest-icon">❦</div>
-          <div class="badge-names">M & A</div>
-          <div class="badge-sub">The Wedding</div>
+          <div class="round-medallion-content">
+            <div class="medallion-crest">❦</div>
+            <div class="medallion-names">M & A</div>
+            <div class="medallion-sub">The Wedding</div>
+          </div>
         </div>
 
-        <div class="zipper-pendant-hook"></div>
-        <div class="zipper-pendant"></div>
+        <div class="slider-head-box">
+          <div class="slider-tab-ring"></div>
+        </div>
+
+        <div class="slider-pull-charm"></div>
 
         <div class="badge-pill-hint">
-          <span>Tap to open</span>
+          <span>Tap or drag down to open</span>
         </div>
       </div>
     </div>
@@ -901,47 +912,45 @@
          ========================================= -->
     <div id="page-invite">
 
-      <!-- Pavilion Gate Arch with Maavilai Garland -->
-      <div class="hero-arch">
-        <div class="thoranam-wrap">
-          <svg width="280" height="26" viewBox="0 0 280 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 4 C40 14, 100 14, 140 4 C180 14, 240 14, 280 4" stroke="#cbb287" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <path d="M40 10 C36 18, 44 24, 40 26 C36 24, 44 18, 40 10 Z" fill="#6d8366"/>
-            <path d="M90 12 C86 20, 94 26, 90 28 C86 26, 94 20, 90 12 Z" fill="#6d8366"/>
-            <path d="M140 13 C135 21, 145 28, 140 30 C135 28, 145 21, 140 13 Z" fill="#bfa072"/>
-            <path d="M190 12 C186 20, 194 26, 190 28 C186 26, 194 20, 190 12 Z" fill="#6d8366"/>
-            <path d="M240 10 C236 18, 244 24, 240 26 C236 24, 244 18, 240 10 Z" fill="#6d8366"/>
-          </svg>
+      <!-- Palace Arch Pavilion Header Matching Screenshot -->
+      <div class="hero-arch-container">
+        <div class="reveal-text-group" id="reveal-text-group">
+          <div class="hero-lead">We're getting married</div>
+
+          <div class="couple-title-groom">Miruthula</div>
+          <span class="hero-ampersand">&</span>
+          <div class="couple-title-bride">Agileshwaran</div>
+
+          <div class="family-parents-box">
+            <div><strong>Groom:</strong> S/o Sivanandam & Vijayalakshmi</div>
+            <div style="margin-top: 4px;"><strong>Bride:</strong> D/o Mohanasundaram & Selvi</div>
+          </div>
+
+          <!-- Blessing quote centered between parents & fountain -->
+          <p class="hero-blessing-quote">
+            "With the blessings of the Almighty, our ancestors, and our beloved families, we joyfully invite you to celebrate our union as we begin this sacred lifelong journey of love, faith, and companionship."
+          </p>
         </div>
-
-        <div class="hero-lead">We Are Getting Married</div>
-
-        <div class="couple-title-groom">Miruthula</div>
-        <span class="hero-ampersand">&</span>
-        <div class="couple-title-bride">Agileshwaran</div>
-
-        <div class="family-parents-box">
-          <div><strong>Groom:</strong> S/o Sivanandam & Vijayalakshmi</div>
-          <div style="margin-top: 4px;"><strong>Bride:</strong> D/o Mohanasundaram & Selvi</div>
-        </div>
-
-        <p class="welcome-quote">
-          "With the blessings of the Almighty, our ancestors, and our beloved families, we joyfully invite you to celebrate our union as we begin this sacred lifelong journey of love, faith, and companionship."
-        </p>
       </div>
 
-      <!-- Scratch to Reveal Card -->
+      <!-- Scratch to Reveal Card: Bigger Heart, Uncongested Dates, Strict 90% Scratch Threshold -->
       <div class="scratch-card">
-        <div class="scratch-card-title">Save The Date</div>
-        <div class="scratch-card-subtitle">Scratch below to unveil the date</div>
+        <div class="scratch-card-subtitle">Scratch the heart below to uncover the date</div>
 
-        <div class="heart-stage">
+        <div class="heart-stage" id="heart-stage">
+          <!-- Outlined Round Heart Border SVG (280x255) -->
+          <svg class="heart-outline-svg" viewBox="0 0 280 255" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M140 236 C116 218, 20 153, 20 83 C20 39, 53 16, 90 16 C113 16, 130 29, 140 44 C150 29, 167 16, 190 16 C227 16, 260 39, 260 83 C260 153, 164 218, 140 236 Z" 
+                  stroke="#cbb287" stroke-width="2" stroke-dasharray="3.5 3.5"/>
+          </svg>
+
+          <!-- Fully Uncongested Text Layer -->
           <div class="heart-revealed-layer">
-            <div class="sub-forever">Our Forever Begins</div>
+            <div class="sub-forever">Our forever begins</div>
             <div class="dates-val">11 & 12 Mar</div>
             <div class="year-val">2027</div>
           </div>
-          <canvas class="scratch-canvas" id="scratch-canvas" width="220" height="200"></canvas>
+          <canvas class="scratch-canvas" id="scratch-canvas" width="280" height="255"></canvas>
         </div>
 
         <a href="javascript:void(0)" onclick="openGoogleCalendar()" class="btn-save-date">Save The Date</a>
@@ -992,19 +1001,17 @@
         </div>
       </div>
 
-      <!-- Program Timeline -->
-      <div class="section-header-title">Ceremony Schedule</div>
+      <!-- Program Timeline: Clean, Minimal, No Paragraphs -->
+      <div class="section-header-title">Program Timeline</div>
 
       <div class="card-entry">
         <h3 class="entry-title">Wedding Reception</h3>
         <div class="entry-time">Thursday, 11th March 2027 &bull; 6:00 PM – 9:00 PM</div>
-        <p class="entry-desc">Join us for an evening of joyous stage blessings, music, and a celebratory dinner feast.</p>
       </div>
 
       <div class="card-entry">
         <h3 class="entry-title">Auspicious Muhurtham</h3>
         <div class="entry-time">Friday, 12th March 2027 &bull; 6:00 AM – 7:30 AM</div>
-        <p class="entry-desc">The sacred morning ceremony, tying of the sacred Mangalsutra, followed by traditional breakfast feast.</p>
       </div>
 
       <!-- Venue & Location Section with Exact Map Embed -->
@@ -1012,7 +1019,7 @@
       <div class="card-entry">
         <div class="venue-center">
           <h3 class="venue-name">RPT Thirumana Mandapam</h3>
-          <div class="venue-sub">Mullamparappu, Erode, Tamil Nadu</div>
+          <div class="venue-sub">Mullamparappu, Tamil Nadu</div>
         </div>
 
         <div class="venue-map-wrap">
@@ -1054,144 +1061,226 @@
 
   <script>
     /* =========================================
-       1. TRUE SYNCHRONIZED SPLIT UNZIP
+       1. SYNCHRONIZED DRAG & TAP UNZIP ENGINE
        ========================================= */
-    let isUnzipping = false;
+    const runner = document.getElementById('zipper-runner');
+    const curtainLeft = document.getElementById('curtain-left');
+    const curtainRight = document.getElementById('curtain-right');
+    const closedTeeth = document.getElementById('closed-teeth');
+    const pageZipper = document.getElementById('page-zipper');
+    const phoneContainer = document.getElementById('phone-container');
+    const revealTextGroup = document.getElementById('reveal-text-group');
 
-    function startSynchronizedUnzip() {
-      if (isUnzipping) return;
-      isUnzipping = true;
+    const startPercent = 25;
+    const endPercent = 95;
+    let isUnzipped = false;
+    let isDragging = false;
+    let startY = 0;
+    let currentDragY = 0;
 
-      const runner = document.getElementById('zipper-runner');
-      const curtainLeft = document.getElementById('curtain-left');
-      const curtainRight = document.getElementById('curtain-right');
-      const closedTeeth = document.getElementById('closed-teeth');
-      const pageZipper = document.getElementById('page-zipper');
-      const phoneContainer = document.getElementById('phone-container');
+    function applyUnzipState(progress) {
+      const currentPos = startPercent + (endPercent - startPercent) * progress;
+      runner.style.top = currentPos + '%';
+      closedTeeth.style.height = (100 - currentPos) + '%';
 
-      playAudioSafe();
+      const leftPeelX = 100 - (progress * 100);
+      curtainLeft.style.clipPath = `polygon(0 0, ${leftPeelX}% 0, 100% ${currentPos}%, 100% 100%, 0 100%)`;
 
-      const startTime = performance.now();
-      const duration = 1600; // 1.6s smooth unzipping
-      const startPercent = 14;
-      const endPercent = 95;
-
-      function easeInOutCubic(t) {
-        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      }
-
-      function animateUnzip(currentTime) {
-        const elapsed = currentTime - startTime;
-        const rawProgress = Math.min(elapsed / duration, 1);
-        const progress = easeInOutCubic(rawProgress);
-
-        const currentPos = startPercent + (endPercent - startPercent) * progress;
-
-        // 1. Move runner down
-        runner.style.top = currentPos + '%';
-
-        // 2. Teeth below runner remain closed; teeth above are separated
-        closedTeeth.style.top = currentPos + '%';
-
-        // 3. Dynamic V-shaped split: above currentPos, panels peel outward!
-        const leftPeelX = 100 - (progress * 100);
-        curtainLeft.style.clipPath = `polygon(0 0, ${leftPeelX}% 0, 100% ${currentPos}%, 100% 100%, 0 100%)`;
-
-        const rightPeelX = progress * 100;
-        curtainRight.style.clipPath = `polygon(${rightPeelX}% 0, 100% 0, 100% 100%, 0 100%, 0 ${currentPos}%)`;
-
-        if (rawProgress < 1) {
-          requestAnimationFrame(animateUnzip);
-        } else {
-          pageZipper.style.transition = 'opacity 0.4s ease';
-          pageZipper.style.opacity = '0';
-
-          setTimeout(() => {
-            pageZipper.style.display = 'none';
-
-            // Transfer scrolling strictly to the browser window
-            document.documentElement.classList.add('unzipped-page');
-            document.body.classList.add('unzipped-page');
-            phoneContainer.classList.add('unzipped-page');
-
-            initHeart();
-            startCarousel();
-          }, 400);
-        }
-      }
-
-      requestAnimationFrame(animateUnzip);
+      const rightPeelX = progress * 100;
+      curtainRight.style.clipPath = `polygon(${rightPeelX}% 0, 100% 0, 100% 100%, 0 100%, 0 ${currentPos}%)`;
     }
 
+    function completeUnzip() {
+      if (isUnzipped) return;
+      isUnzipped = true;
+      playAudioSafe();
+
+      const obj = { p: (parseFloat(runner.style.top || startPercent) - startPercent) / (endPercent - startPercent) };
+      gsap.to(obj, {
+        p: 1,
+        duration: 0.9,
+        ease: "power2.out",
+        onUpdate: () => applyUnzipState(obj.p),
+        onComplete: () => {
+          gsap.to(pageZipper, {
+            opacity: 0,
+            duration: 0.4,
+            onComplete: () => {
+              pageZipper.style.display = 'none';
+
+              document.documentElement.classList.add('unzipped-page');
+              document.body.classList.add('unzipped-page');
+              phoneContainer.classList.add('unzipped-page');
+
+              setTimeout(() => {
+                revealTextGroup.classList.add('revealed');
+              }, 400);
+
+              initHeart();
+              startCarousel();
+            }
+          });
+        }
+      });
+    }
+
+    function resetZipper() {
+      const obj = { p: (parseFloat(runner.style.top || startPercent) - startPercent) / (endPercent - startPercent) };
+      gsap.to(obj, {
+        p: 0,
+        duration: 0.4,
+        ease: "power2.out",
+        onUpdate: () => applyUnzipState(obj.p)
+      });
+    }
+
+    runner.addEventListener('pointerdown', (e) => {
+      if (isUnzipped) return;
+      isDragging = true;
+      startY = e.clientY;
+      runner.setPointerCapture(e.pointerId);
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (!isDragging || isUnzipped) return;
+      const deltaY = e.clientY - startY;
+      const totalH = window.innerHeight * 0.7;
+      const progress = Math.max(0, Math.min(1, deltaY / totalH));
+      applyUnzipState(progress);
+      currentDragY = deltaY;
+    });
+
+    window.addEventListener('pointerup', (e) => {
+      if (!isDragging || isUnzipped) return;
+      isDragging = false;
+      if (currentDragY > 100) {
+        completeUnzip();
+      } else {
+        resetZipper();
+      }
+    });
+
+    runner.addEventListener('click', () => {
+      if (!isUnzipped && currentDragY < 10) {
+        completeUnzip();
+      }
+    });
+
+    applyUnzipState(0);
+
     /* =========================================
-       2. HEART SCRATCH CANVAS
+       2. STRICT 90% SCRATCH ENGINE
        ========================================= */
     const canvas = document.getElementById('scratch-canvas');
     const ctx = canvas.getContext('2d');
-    let revealed = false;
-    let scratchCount = 0;
+    let isScratchingActive = false;
+    let isHeartRevealed = false;
+    let lastCheckTime = 0;
 
-    function drawHeartPath(c, x, y, w, h) {
+    function drawFullRoundHeartPath(c, ox, oy, scale) {
       c.beginPath();
-      const topH = h * 0.3;
-      c.moveTo(x + w / 2, y + h);
-      c.bezierCurveTo(x, y + h * 0.6, x, y + topH, x + w * 0.25, y);
-      c.bezierCurveTo(x + w * 0.45, y, x + w / 2, y + topH * 0.8, x + w / 2, y + topH);
-      c.bezierCurveTo(x + w / 2, y + topH * 0.8, x + w * 0.55, y, x + w * 0.75, y);
-      c.bezierCurveTo(x + w, y + topH, x + w, y + h * 0.6, x + w / 2, y + h);
+      const x = ox + 140 * scale;
+      const y = oy + 236 * scale;
+      c.moveTo(x, y);
+      c.bezierCurveTo(ox + 116 * scale, oy + 218 * scale, ox + 20 * scale, oy + 153 * scale, ox + 20 * scale, oy + 83 * scale);
+      c.bezierCurveTo(ox + 20 * scale, oy + 39 * scale, ox + 53 * scale, oy + 16 * scale, ox + 90 * scale, oy + 16 * scale);
+      c.bezierCurveTo(ox + 113 * scale, oy + 16 * scale, ox + 130 * scale, oy + 29 * scale, ox + 140 * scale, oy + 44 * scale);
+      c.bezierCurveTo(ox + 150 * scale, oy + 29 * scale, ox + 167 * scale, oy + 16 * scale, ox + 190 * scale, oy + 16 * scale);
+      c.bezierCurveTo(ox + 227 * scale, oy + 16 * scale, ox + 260 * scale, oy + 39 * scale, ox + 260 * scale, oy + 83 * scale);
+      c.bezierCurveTo(ox + 260 * scale, oy + 153 * scale, ox + 164 * scale, oy + 218 * scale, x, y);
       c.closePath();
     }
 
     function initHeart() {
       ctx.save();
-      drawHeartPath(ctx, 10, 10, 200, 180);
+      drawFullRoundHeartPath(ctx, 0, 0, 1);
       ctx.clip();
 
-      const grad = ctx.createLinearGradient(0, 0, 220, 200);
-      grad.addColorStop(0, '#758c6e');
-      grad.addColorStop(0.5, '#96aa91');
-      grad.addColorStop(1, '#5f755a');
+      const grad = ctx.createLinearGradient(0, 0, 280, 255);
+      grad.addColorStop(0, '#657a5f');
+      grad.addColorStop(0.5, '#8fa887');
+      grad.addColorStop(1, '#50634c');
       ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 220, 200);
+      ctx.fillRect(0, 0, 280, 255);
 
-      // Gold shimmer specks
-      ctx.fillStyle = 'rgba(255, 235, 195, 0.55)';
-      for (let i = 0; i < 75; i++) {
+      // Gold & pearl shimmering glitter flakes
+      ctx.fillStyle = 'rgba(255, 235, 195, 0.65)';
+      for (let i = 0; i < 110; i++) {
         ctx.beginPath();
-        ctx.arc(Math.random() * 220, Math.random() * 200, Math.random() * 2 + 0.5, 0, Math.PI * 2);
+        ctx.arc(Math.random() * 280, Math.random() * 255, Math.random() * 2.2 + 0.6, 0, Math.PI * 2);
         ctx.fill();
       }
 
       ctx.font = 'bold 11px Montserrat, sans-serif';
       ctx.fillStyle = '#ffffff';
       ctx.textAlign = 'center';
-      ctx.fillText('SCRATCH HERE', 110, 95);
+      ctx.fillText('SCRATCH HERE', 140, 118);
       ctx.font = '9px Montserrat, sans-serif';
       ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-      ctx.fillText('✨ TO REVEAL DATE ✨', 110, 115);
+      ctx.fillText('✨ RUB TO UNVEIL ✨', 140, 138);
       ctx.restore();
     }
 
-    function clearHeartSlowly() {
-      if (revealed) return;
-      revealed = true;
-      canvas.classList.add('fade-out');
-      setTimeout(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }, 1600);
+    function triggerRevealingBurst() {
+      const rect = document.getElementById('heart-stage').getBoundingClientRect();
+      const x = (rect.left + rect.width / 2) / window.innerWidth;
+      const y = (rect.top + rect.height / 2) / window.innerHeight;
+
+      confetti({
+        particleCount: 80,
+        spread: 80,
+        origin: { x: x, y: y },
+        colors: ['#c5a470', '#e3c996', '#61775d', '#8fa688', '#ffffff'],
+        ticks: 200,
+        gravity: 0.8,
+        scalar: 0.95,
+        shapes: ['circle']
+      });
     }
 
-    function doScratch(x, y) {
-      if (revealed) return;
+    function calculateScratchPercentage() {
+      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const pixels = imgData.data;
+      let transparentPixels = 0;
+      let totalHeartPixels = 0;
+
+      for (let i = 3; i < pixels.length; i += 16) {
+        totalHeartPixels++;
+        if (pixels[i] < 32) {
+          transparentPixels++;
+        }
+      }
+
+      return (transparentPixels / totalHeartPixels);
+    }
+
+    function checkScratchCoverage() {
+      if (isHeartRevealed) return;
+      const now = performance.now();
+      if (now - lastCheckTime > 90) {
+        lastCheckTime = now;
+        const percentage = calculateScratchPercentage();
+
+        // STRICT 90% THRESHOLD
+        if (percentage >= 0.90) {
+          isHeartRevealed = true;
+          canvas.classList.add('fade-out');
+          triggerRevealingBurst();
+
+          setTimeout(() => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }, 1200);
+        }
+      }
+    }
+
+    function scratchAtPoint(x, y) {
+      if (isHeartRevealed) return;
       ctx.globalCompositeOperation = 'destination-out';
       ctx.beginPath();
-      ctx.arc(x, y, 22, 0, Math.PI * 2);
+      ctx.arc(x, y, 20, 0, Math.PI * 2);
       ctx.fill();
-
-      scratchCount++;
-      if (scratchCount >= 4) {
-        clearHeartSlowly();
-      }
+      checkScratchCoverage();
     }
 
     function getCoords(e) {
@@ -1204,16 +1293,33 @@
       };
     }
 
-    let isScratching = false;
-    canvas.addEventListener('mousedown', (e) => { isScratching = true; const p = getCoords(e); doScratch(p.x, p.y); });
-    window.addEventListener('mouseup', () => { if (isScratching && scratchCount > 0) clearHeartSlowly(); isScratching = false; });
-    canvas.addEventListener('mousemove', (e) => { if (isScratching) { const p = getCoords(e); doScratch(p.x, p.y); } });
+    canvas.addEventListener('mousedown', (e) => {
+      isScratchingActive = true;
+      const p = getCoords(e);
+      scratchAtPoint(p.x, p.y);
+    });
+    window.addEventListener('mouseup', () => { isScratchingActive = false; });
+    canvas.addEventListener('mousemove', (e) => {
+      if (isScratchingActive) {
+        const p = getCoords(e);
+        scratchAtPoint(p.x, p.y);
+      }
+    });
 
-    canvas.addEventListener('touchstart', (e) => { isScratching = true; const p = getCoords(e); doScratch(p.x, p.y); e.preventDefault(); }, { passive: false });
-    window.addEventListener('touchend', () => { if (isScratching && scratchCount > 0) clearHeartSlowly(); isScratching = false; });
-    canvas.addEventListener('touchmove', (e) => { if (isScratching) { const p = getCoords(e); doScratch(p.x, p.y); } e.preventDefault(); }, { passive: false });
-
-    canvas.addEventListener('click', clearHeartSlowly);
+    canvas.addEventListener('touchstart', (e) => {
+      isScratchingActive = true;
+      const p = getCoords(e);
+      scratchAtPoint(p.x, p.y);
+      e.preventDefault();
+    }, { passive: false });
+    window.addEventListener('touchend', () => { isScratchingActive = false; });
+    canvas.addEventListener('touchmove', (e) => {
+      if (isScratchingActive) {
+        const p = getCoords(e);
+        scratchAtPoint(p.x, p.y);
+      }
+      e.preventDefault();
+    }, { passive: false });
 
     /* =========================================
        3. PHOTO CAROUSEL
@@ -1239,7 +1345,7 @@
     /* =========================================
        4. COUNTDOWN TIMER (March 11, 2027, 6:00 PM)
        ========================================= */
-    const celebrationDate = new Date(2027, 2, 11, 18, 0, 0); // Month 2 = March
+    const celebrationDate = new Date(2027, 2, 11, 18, 0, 0);
 
     function tickTimer() {
       const now = new Date();
@@ -1277,8 +1383,8 @@
     const isMobileDevice = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const calData = {
       title: "Miruthula & Agileshwaran Wedding & Reception",
-      details: "Reception: Mar 11, 2027 (6:00 PM - 9:00 PM)\nMuhurtham: Mar 12, 2027 (6:00 AM - 7:30 AM)\nLocation: RPT Thirumana Mandapam, Mullamparappu, Erode, Tamil Nadu\nMap: https://maps.app.goo.gl/4MpsrRrhXo4avKHz9",
-      location: "RPT Thirumana Mandapam, Mullamparappu, Erode, Tamil Nadu",
+      details: "Reception: Mar 11, 2027 (6:00 PM - 9:00 PM)\nMuhurtham: Mar 12, 2027 (6:00 AM - 7:30 AM)\nLocation: RPT Thirumana Mandapam, Mullamparappu, Tamil Nadu\nMap: https://maps.app.goo.gl/4MpsrRrhXo4avKHz9",
+      location: "RPT Thirumana Mandapam, Mullamparappu, Tamil Nadu",
       startDate: "20270311T180000",
       endDate: "20270312T080000"
     };
