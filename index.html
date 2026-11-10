@@ -332,11 +332,6 @@
       background: var(--card-cream);
     }
 
-    /* 
-       EXACT VIEWPORT-LOCKED HERO ARCH CONTAINER:
-       Uses relative positioning with an absolute safe box to guarantee
-       text can NEVER touch the curtains above or the fountain below.
-    */
     .hero-arch-container {
       position: relative;
       width: 100%;
@@ -350,13 +345,12 @@
       overflow: hidden;
     }
 
-    /* Strict Bounding Box over the clear ivory area of the background */
     .hero-safe-corridor {
       position: absolute;
-      top: 24%;    /* Strictly below canopy valance & tassels */
-      bottom: 32%; /* Strictly above fountain basin & plants */
-      left: 14%;   /* Strictly inside the rose bouquets */
-      right: 14%;  /* Strictly inside the rose bouquets */
+      top: 24%;
+      bottom: 32%;
+      left: 14%;
+      right: 14%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -496,34 +490,66 @@
       text-align: center;
       z-index: 2;
       pointer-events: none;
-      width: 220px;
-      padding-top: 10px;
+      width: 230px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 18px;
+    }
+
+    .heart-top-filigree {
+      font-size: 0.85rem;
+      color: #b59567;
+      line-height: 1;
+      margin-bottom: 2px;
+      letter-spacing: 2px;
     }
 
     .heart-revealed-layer .sub-forever {
       font-family: var(--font-script);
-      font-size: 1.55rem;
+      font-size: 1.85rem;
       color: #8c6d48;
-      line-height: 1.1;
-      margin-bottom: 8px;
+      line-height: 1.05;
+      margin-bottom: 4px;
     }
 
     .heart-revealed-layer .dates-val {
       font-family: var(--font-headline);
-      font-size: 1.75rem;
-      font-weight: 600;
-      color: #3b2c21;
-      margin-bottom: 4px;
+      font-size: 2.65rem;
+      font-weight: 700;
+      color: #2b1f16;
+      line-height: 1;
       letter-spacing: 1.5px;
-      line-height: 1.15;
+      margin: 2px 0;
+      text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+    }
+
+    .heart-revealed-layer .month-val {
+      font-family: var(--font-caps);
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: 6px;
+      color: #433225;
+      line-height: 1.1;
+      margin-top: 2px;
+      text-transform: uppercase;
     }
 
     .heart-revealed-layer .year-val {
-      font-family: var(--font-caps);
-      font-size: 0.96rem;
-      letter-spacing: 5px;
+      font-family: var(--font-sans);
+      font-size: 1.05rem;
+      letter-spacing: 6px;
       color: #7d6b5e;
       font-weight: 600;
+      margin-top: 3px;
+    }
+
+    .heart-bottom-filigree {
+      font-size: 0.95rem;
+      color: #c5a470;
+      line-height: 1;
+      margin-top: 6px;
     }
 
     .scratch-canvas {
@@ -566,7 +592,9 @@
       transform: translateY(-1px);
     }
 
-    /* Photo Carousel */
+    /* =========================================
+       PHOTO CAROUSEL (TOUCH SWIPE & SIDES)
+       ========================================= */
     .carousel-wrap {
       margin: 24px 16px;
       background: #ffffff;
@@ -582,13 +610,22 @@
       border-radius: 14px;
       overflow: hidden;
       background: #eee8e0;
+      position: relative;
+      touch-action: pan-y;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .carousel-viewport:active {
+      cursor: grabbing;
     }
 
     .carousel-slider {
       display: flex;
       width: 100%;
       height: 100%;
-      transition: transform 0.4s ease;
+      transition: transform 0.38s cubic-bezier(0.25, 1, 0.5, 1);
+      pointer-events: none;
     }
 
     .carousel-item {
@@ -600,7 +637,19 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      pointer-events: none;
     }
+
+    /* Invisible tap targets on sides for effortless navigation */
+    .carousel-side-nav {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 25%;
+      z-index: 5;
+    }
+    .carousel-side-left { left: 0; }
+    .carousel-side-right { right: 0; }
 
     .carousel-dots {
       display: flex;
@@ -615,12 +664,12 @@
       border-radius: 50%;
       background: #d8c7b8;
       cursor: pointer;
-      transition: 0.2s;
+      transition: 0.25s;
     }
 
     .carousel-dot.active {
       background: var(--btn-green);
-      width: 22px;
+      width: 24px;
       border-radius: 10px;
     }
 
@@ -914,7 +963,7 @@
         </div>
       </div>
 
-      <!-- Scratch to Reveal Card: Bigger Heart, Uncongested Dates, Strict 90% Scratch Threshold -->
+      <!-- Scratch to Reveal Card: Fully Filled, Grand Heart Display -->
       <div class="scratch-card">
         <div class="scratch-card-subtitle">Scratch the heart below to uncover the date</div>
 
@@ -924,10 +973,14 @@
                   stroke="#cbb287" stroke-width="2" stroke-dasharray="3.5 3.5"/>
           </svg>
 
+          <!-- Rich, perfectly filled heart typography -->
           <div class="heart-revealed-layer">
+            <div class="heart-top-filigree">❦</div>
             <div class="sub-forever">Our forever begins</div>
-            <div class="dates-val">11 & 12 Mar</div>
+            <div class="dates-val">11 & 12</div>
+            <div class="month-val">MARCH</div>
             <div class="year-val">2027</div>
+            <div class="heart-bottom-filigree">❦</div>
           </div>
           <canvas class="scratch-canvas" id="scratch-canvas" width="280" height="255"></canvas>
         </div>
@@ -935,27 +988,34 @@
         <a href="javascript:void(0)" onclick="openGoogleCalendar()" class="btn-save-date">Save The Date</a>
       </div>
 
-      <!-- Photo Carousel -->
-      <div class="carousel-wrap">
-        <div class="carousel-viewport">
-          <div class="carousel-slider" id="carousel-slider">
-            <div class="carousel-item">
-              <img src="portrait.jpg" alt="Couple" onerror="this.src='couple.jpg'">
-            </div>
-            <div class="carousel-item">
-              <img src="banner.jpg" alt="Moments" onerror="this.src='portrait.jpg'">
-            </div>
-            <div class="carousel-item">
-              <img src="couple.jpg" alt="Celebration" onerror="this.src='banner.jpg'">
-            </div>
-          </div>
-        </div>
-        <div class="carousel-dots">
-          <div class="carousel-dot active" onclick="gotoSlide(0)"></div>
-          <div class="carousel-dot" onclick="gotoSlide(1)"></div>
-          <div class="carousel-dot" onclick="gotoSlide(2)"></div>
-        </div>
+      <!-- Photo Carousel with Swipe Gestures & Side Tap -->
+<div class="carousel-wrap">
+  <div class="carousel-viewport" id="carousel-viewport">
+    <div class="carousel-slider" id="carousel-slider">
+      <div class="carousel-item">
+        <img src="family.jpg" alt="Photo 1" onerror="this.onerror=null; this.src='mithu.jpg';">
       </div>
+      <div class="carousel-item">
+        <img src="mithu.jpg" alt="Photo 2" onerror="this.onerror=null; this.src='agil.jpg';">
+      </div>
+      <div class="carousel-item">
+        <img src="agil.jpg" alt="Photo 3" onerror="this.onerror=null; this.src='couple.jpg';">
+      </div>
+      <div class="carousel-item">
+        <img src="couple.jpg" alt="Photo 4" onerror="this.onerror=null; this.src='family.jpg';">
+      </div>
+    </div>
+    <!-- Left and right side click areas -->
+    <div class="carousel-side-nav carousel-side-left" id="prev-nav"></div>
+    <div class="carousel-side-nav carousel-side-right" id="next-nav"></div>
+  </div>
+  <div class="carousel-dots">
+    <div class="carousel-dot active" onclick="manualSlide(0)"></div>
+    <div class="carousel-dot" onclick="manualSlide(1)"></div>
+    <div class="carousel-dot" onclick="manualSlide(2)"></div>
+    <div class="carousel-dot" onclick="manualSlide(3)"></div>
+  </div>
+</div>
 
       <!-- Live Countdown -->
       <div class="countdown-block">
@@ -984,15 +1044,13 @@
       <div class="section-header-title">Program Timeline</div>
 
       <div class="card-entry">
-        <div class="event-lamp-icon">🪔</div>
-        <h3 class="entry-title">Wedding Reception</h3>
+        <h3 class="entry-title">Reception</h3>
         <div class="entry-time">Thursday, 11th March 2027 &bull; 6:00 PM – 9:00 PM</div>
       </div>
 
       <div class="card-entry">
-        <div class="event-lamp-icon">🪔</div>
-        <h3 class="entry-title">Auspicious Muhurtham</h3>
-        <div class="entry-time">Friday, 12th March 2027 &bull; 6:00 AM – 7:30 AM</div>
+        <h3 class="entry-title">Muhurtham</h3>
+        <div class="entry-time">Friday, 12th March 2027 &bull; 6:00 AM – 7:00 AM</div>
       </div>
 
       <!-- Venue & Location Section with Exact Map Embed -->
@@ -1022,7 +1080,7 @@
           "Your esteemed presence and warm blessings will make our special day truly memorable."
         </p>
         <div style="font-family: var(--font-script); font-size: 2.8rem; color: #8c7052; margin-top: 10px; line-height: 1;">
-          Miruthula & Agileshwaran
+          Mithu Agil & Family
         </div>
       </div>
 
@@ -1034,9 +1092,9 @@
       <span id="music-text">MUSIC ON</span>
     </div>
 
-    <audio id="audio-bg" loop preload="auto">
-      <source src="music.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="audio-bg" loop preload="auto" playsinline>
+	  <source src="music.mp3" type="audio/mpeg">
+	</audio>
 
   </div>
 
@@ -1301,25 +1359,105 @@
     }, { passive: false });
 
     /* =========================================
-       3. PHOTO CAROUSEL
+       3. PHOTO CAROUSEL (SWIPE GESTURE & SIDE TOUCH)
        ========================================= */
+    const totalSlides = 4;
     let activeIndex = 0;
     let carouselTimer = null;
+    const viewport = document.getElementById('carousel-viewport');
+    const slider = document.getElementById('carousel-slider');
+    const dots = document.querySelectorAll('.carousel-dot');
 
     function gotoSlide(idx) {
-      activeIndex = idx;
-      const slider = document.getElementById('carousel-slider');
-      const dots = document.querySelectorAll('.carousel-dot');
-      if (slider) slider.style.transform = `translateX(-${idx * 100}%)`;
-      dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
+      activeIndex = (idx + totalSlides) % totalSlides;
+      if (slider) slider.style.transform = `translateX(-${activeIndex * 100}%)`;
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === activeIndex));
+    }
+
+    function manualSlide(idx) {
+      gotoSlide(idx);
+      resetAutoPlay();
     }
 
     function startCarousel() {
-      if (carouselTimer) return;
+      if (carouselTimer) clearInterval(carouselTimer);
       carouselTimer = setInterval(() => {
-        gotoSlide((activeIndex + 1) % 3);
-      }, 3600);
+        gotoSlide(activeIndex + 1);
+      }, 3800);
     }
+
+    function resetAutoPlay() {
+      clearInterval(carouselTimer);
+      startCarousel();
+    }
+
+    // Touch & Swipe mechanics
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let touchStartY = 0;
+    let isSwiping = false;
+
+    viewport.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+      isSwiping = true;
+    }, { passive: true });
+
+    viewport.addEventListener('touchend', (e) => {
+      if (!isSwiping) return;
+      touchEndX = e.changedTouches[0].screenX;
+      const touchEndY = e.changedTouches[0].screenY;
+      
+      const diffX = touchEndX - touchStartX;
+      const diffY = touchEndY - touchStartY;
+
+      // Ensure horizontal swipe intent over vertical page scroll
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 38) {
+        if (diffX < 0) {
+          gotoSlide(activeIndex + 1); // Swipe Left -> Next
+        } else {
+          gotoSlide(activeIndex - 1); // Swipe Right -> Prev
+        }
+        resetAutoPlay();
+      }
+      isSwiping = false;
+    }, { passive: true });
+
+    // Side Taps
+    document.getElementById('prev-nav').addEventListener('click', (e) => {
+      e.stopPropagation();
+      gotoSlide(activeIndex - 1);
+      resetAutoPlay();
+    });
+
+    document.getElementById('next-nav').addEventListener('click', (e) => {
+      e.stopPropagation();
+      gotoSlide(activeIndex + 1);
+      resetAutoPlay();
+    });
+
+    // Mouse Drag support for desktop preview
+    let isMouseDown = false;
+    let mouseStartX = 0;
+
+    viewport.addEventListener('mousedown', (e) => {
+      isMouseDown = true;
+      mouseStartX = e.clientX;
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isMouseDown) return;
+      const diffX = e.clientX - mouseStartX;
+      if (Math.abs(diffX) > 40) {
+        if (diffX < 0) {
+          gotoSlide(activeIndex + 1);
+        } else {
+          gotoSlide(activeIndex - 1);
+        }
+        resetAutoPlay();
+      }
+      isMouseDown = false;
+    });
 
     /* =========================================
        4. COUNTDOWN TIMER (March 11, 2027, 6:00 PM)
@@ -1383,40 +1521,56 @@
     }
 
     /* =========================================
-       6. AUDIO HANDLER
-       ========================================= */
-    const audioEl = document.getElementById('audio-bg');
-    const chip = document.getElementById('music-chip');
-    const chipLabel = document.getElementById('music-text');
-    let playing = false;
+   6. AUDIO HANDLER (DEFAULT ON)
+   ========================================= */
+	const audioEl = document.getElementById('audio-bg');
+	const chip = document.getElementById('music-chip');
+	const chipLabel = document.getElementById('music-text');
+	let playing = false;
 
-    function playAudioSafe() {
-      if (!audioEl) return;
-      audioEl.play().then(() => {
-        playing = true;
-        chip.classList.add('playing');
-        chipLabel.textContent = 'MUSIC ON';
-      }).catch(() => {
-        playing = false;
-        chip.classList.remove('playing');
-        chipLabel.textContent = 'MUSIC OFF';
-      });
-    }
+	function playAudioSafe() {
+	  if (!audioEl || playing) return;
+		audioEl.play().then(() => {
+		playing = true;
+		chip.classList.add('playing');
+		chipLabel.textContent = 'MUSIC ON';
+	  }).catch(() => {
+	// If blocked prior to gesture, keep ready for first tap
+		playing = false;
+		chip.classList.remove('playing');
+		chipLabel.textContent = 'MUSIC OFF';
+	  });
+	}
 
-    function toggleMusicPlayback() {
-      if (!audioEl) return;
-      if (playing) {
-        audioEl.pause();
-        playing = false;
-        chip.classList.remove('playing');
-        chipLabel.textContent = 'MUSIC OFF';
-      } else {
-        audioEl.play();
-        playing = true;
-        chip.classList.add('playing');
-        chipLabel.textContent = 'MUSIC ON';
-      }
-    }
+	function toggleMusicPlayback() {
+	  if (!audioEl) return;
+	  if (playing) {
+		audioEl.pause();
+		playing = false;
+		chip.classList.remove('playing');
+		chipLabel.textContent = 'MUSIC OFF';
+	  } else {
+		audioEl.play().then(() => {
+			playing = true;
+			chip.classList.add('playing');
+			chipLabel.textContent = 'MUSIC ON';
+		});
+	  }
+	}
+
+	// 1. Attempt autoplay immediately on load (works on desktop if allowed)
+	window.addEventListener('DOMContentLoaded', () => {
+	  playAudioSafe();
+	});
+
+	// 2. Fallback: Unlock audio on the guest's very first screen touch anywhere
+	const unlockAudioOnFirstTouch = () => {
+      playAudioSafe();
+	  window.removeEventListener('pointerdown', unlockAudioOnFirstTouch);
+      window.removeEventListener('touchstart', unlockAudioOnFirstTouch);
+	};
+	window.addEventListener('pointerdown', unlockAudioOnFirstTouch, { once: true });
+	window.addEventListener('touchstart', unlockAudioOnFirstTouch, { once: true });
   </script>
 </body>
 </html>
